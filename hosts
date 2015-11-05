@@ -1,0 +1,11 @@
+[elasticsearch]
+10.0.3.220
+10.0.3.221
+10.0.3.222
+10.0.3.223
+10.0.3.224
+10.0.3.225
+
+[elasticsearch:vars]
+shards=5
+replicas=1

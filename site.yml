@@ -1,0 +1,7 @@
+- name: Install and Configure ElasticSearch Cluster
+  hosts: elasticsearch
+  remote_user: root
+#  sudo: yes
+  roles:
+  - base
+  - elasticsearch

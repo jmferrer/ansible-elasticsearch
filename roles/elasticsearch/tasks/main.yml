@@ -1,0 +1,28 @@
+- name: Install ElasticSearch Public Signing Key
+#  shell: wget -qO - https://packages.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
+  apt_key: url=https://packages.elastic.co/GPG-KEY-elasticsearch state=present
+
+- name: Add apt repository into sources list
+  apt_repository: repo='deb http://packages.elastic.co/elasticsearch/1.6/debian stable main' state=present
+
+- name: Install jdk 1.7
+  apt: name=openjdk-7-jdk state=latest update_cache=yes
+
+- name: Install ElasticSearch
+  apt: name=elasticsearch state=latest
+
+- name: Configure ElasticSearch
+  template: src=elasticsearch.yml.j2 dest=/etc/elasticsearch/elasticsearch.yml
+  tags: reconfigure
+
+- name: Enable marvel sense plugin
+  shell: /usr/share/elasticsearch/bin/plugin --install elasticsearch/marvel/latest
+  ignore_errors: True
+
+- name: Enable kopf plugin
+  shell: /usr/share/elasticsearch/bin/plugin --install lmenezes/elasticsearch-kopf/master
+  ignore_errors: True
+
+- name: Ensure elasticsearch is restarted
+  service: name=elasticsearch state=restarted
+  tags: reconfigure
